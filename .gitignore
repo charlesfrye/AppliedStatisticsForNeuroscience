@@ -1,0 +1,12 @@
+.DS_Store
+.ipynb_checkpoints/
+
+# LaTeX files
+*.aux
+*.log
+*.synctex.gz
+*.pdf
+*.fdb_latexmk
+
+*.xlsx
+
