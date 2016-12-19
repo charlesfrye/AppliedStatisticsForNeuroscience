@@ -54,6 +54,7 @@ dependencies:
 - readline=6.2=2
 - requests=2.12.4=py34_0
 - scipy=0.18.1=np111py34_0
+- seaborn=0.7.1=py34_0
 - setuptools=27.2.0=py34_0
 - simplegeneric=0.8.1=py34_1
 - sip=4.18=py34_0
