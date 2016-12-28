@@ -12,3 +12,6 @@ __pycache__/
 
 *.xlsx
 
+cast.csv
+release_dates.csv
+titles.csv
