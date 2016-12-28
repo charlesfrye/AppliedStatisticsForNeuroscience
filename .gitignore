@@ -11,7 +11,3 @@ __pycache__/
 *.fdb_latexmk
 
 *.xlsx
-
-cast.csv
-release_dates.csv
-titles.csv
