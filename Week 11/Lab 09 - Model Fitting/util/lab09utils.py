@@ -11,12 +11,16 @@ import ipywidgets as widgets
 
 import matplotlib.pyplot as plt
 
+import seaborn as sns
+
+import scipy.stats
+
 from IPython.core.display import HTML
 
 def formatDataframes():
     css = open('./css/style-table.css').read()
     return HTML('<style>{}</style>'.format(css))
-
+      
 class Parameters(object):
     
     def __init__(self,defaults,ranges,names=None):
@@ -79,6 +83,8 @@ class Model(object):
         self.parameters = parameters
         self.funk = funk
         self.plotted = False
+        self.hasData = False
+        self.showMSE = False
         
     def plot(self):
         if not self.plotted:
@@ -111,9 +117,31 @@ class Model(object):
                 self.parameters.dict[parameter] = kwargs[parameter]
             self.parameters.update()
             self.plot()
+            
+            if self.showMSE:
+                MSE = self.computeMSE()
+                print("MSE:\t"+str(MSE))
             return
         
         return
+    
+    def setData(self,xs,ys):
+        self.dataInputs = self.transformInputs(xs)
+        self.correctOutputs = ys
+        
+        if self.hasData:
+            _offsets = np.asarray([xs,ys]).T
+            self.dataScatter.set_offsets(_offsets)
+        else:
+            self.dataScatter = self.ax.scatter(xs,ys,
+                                               color='k',alpha=0.5,s=72)
+            self.hasData = True
+        
+    def computeMSE(self):
+        outputs = np.squeeze(self.funk(self.dataInputs))
+        squaredErrors = np.square(self.correctOutputs - outputs)
+        MSE = np.mean(squaredErrors)
+        return MSE
     
 class LinearModel(Model):
     
@@ -160,6 +188,9 @@ class NonlinearModel(Model):
             return transform(self.parameters.values,inputs)
         
         Model.__init__(self,inputValues,inputValues,parameters,funk)
+        
+    def transformInputs(self,inputValues):
+        return inputValues
 
 def makeDefaultParameters(number,rnge=1,names=None):
     defaults = [0]*number
@@ -357,3 +388,192 @@ def setupTheta(thetaRange):
     theta = np.random.rand()*thetaWidth+thetaRange[0]
     return theta
 
+## 3D regression plot
+
+def makeRegressionPlot(fitBestModel):
+    
+    #first make the data
+    x_spread = 0.5
+    noise_level = 0.5
+    
+    # regressors are
+    x = np.asarray([
+    [0.5,-1,0.5],
+    [1,1,1]])
+    
+    # for aesthetic reasons, we want the xs to be normalized
+    normalizedX = np.asarray([x[0,:]/np.sqrt(np.sum(np.square(x[0,:]))),
+                         x[1,:]/np.sqrt(np.sum(np.square(x[1,:])))]
+                        )
+    
+    y = 0.5*normalizedX[0]+np.random.standard_normal(3)*noise_level
+   
+    # 
+    N = 5
+    mesh = np.linspace(-1,
+                   1,
+                   N)
+    weights1,weights2 = np.meshgrid(mesh,mesh)
+    
+    Xs = normalizedX[0,0]*weights1+normalizedX[1,0]*weights2
+    Ys = normalizedX[0,1]*weights1+normalizedX[1,1]*weights2
+    Zs = normalizedX[0,2]*weights1+normalizedX[1,2]*weights2
+    
+    # setupPlot
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+    ax.set_aspect('equal')
+
+    ax._axis3don = False
+    
+    # plot the "achievable plane" of model outputs
+    ax.plot_surface(Xs,Ys,Zs,alpha=0.5,color='hotpink',shade=False)
+    
+    # grab the limits of the original plot before we equalize the axis
+    axLim = plt.xlim()
+    
+    # we'll use them to plot the axes:
+    #   an axis is a line that goes between the limits on one axis,
+    #    while staying at 0 on the other axes
+    coords = [axLim,np.zeros_like(axLim),np.zeros_like(axLim)]
+
+    #  plt's set aspect doesn't work in 3D, so use this homebrew
+    axisEqual3D(plt.gca())
+    
+    # plot the y, z, and x axes as thick black lines
+    for _ in range(3):
+        coords = np.roll(coords,1,axis=0)
+        plt.plot(*coords,
+         color='k',linewidth=4,zorder=1);
+    
+    # compute the weights of the best-fit model
+    if fitBestModel:
+        weights = ordinaryLeastSquares(normalizedX,y)
+    else:
+        weights = np.asarray(np.random.rand(2)*x_spread)
+    
+    # compute and plot the outputs of the model as a black star
+    y_hats = np.squeeze(np.dot(weights,normalizedX))
+    ax.scatter3D(*y_hats,marker='*',s=24**2,edgecolor='k',facecolor='None',
+                     zorder=0,zdir='z',linewidth=2)
+    
+    # connect the true values and the model outputs with a red line
+    #   to represent the residuals
+    #   marking the true values with a blue dot
+    residualLine = zip(y,y_hats)
+    ax.plot(*residualLine,linewidth=4,color='red',marker='.',markerfacecolor='skyblue',
+            markersize=24,markevery=2);
+    
+    return
+
+
+def ordinaryLeastSquares(regressors,targets):
+    arrays = [regressors,targets]
+    
+    arrays = [np.expand_dims(array,0) if array.ndim == 1  
+              else array 
+              for array in arrays]
+
+    regressors,targets = arrays
+
+    regressorOuterProductInverse = np.linalg.inv(np.dot(regressors,regressors.T))
+    weights = np.dot(np.dot(targets,regressors.T),regressorOuterProductInverse)
+    return weights
+
+def axisEqual3D(ax,center=0):
+    # FROM StackO/19933125
+    
+    extents = np.array([getattr(ax, 'get_{}lim'.format(dim))() for dim in 'xyz'])
+    sz = extents[:,1] - extents[:,0]
+    if center == 0:
+        centers = [0,0,0]
+    else:
+        centers = np.mean(extents, axis=1)
+    maxsize = max(abs(sz))
+    r = maxsize/2
+    for ctr, dim in zip(centers, 'xyz'):
+        getattr(ax, 'set_{}lim'.format(dim))(ctr - r, ctr + r)        
+
+## Computing and Plotting residuals and regressor-residual correlations
+
+def runSimulation(numExperiments,numDatapoints,useGroundTruth,gaussianNoise,noise_level):
+
+    trueW = 2
+
+    rs = []
+
+    for _ in range(numExperiments):
+
+        xs = np.asarray(np.random.standard_normal(numDatapoints))
+
+        if gaussianNoise:
+            noise = np.random.standard_normal(numDatapoints)
+        else:
+            noise = np.multiply(np.random.choice([-1,1],size=numDatapoints),
+                                np.random.standard_exponential(numDatapoints))
+
+        noise = noise*noise_level
+
+        ys = trueW*xs+noise
+
+        if useGroundTruth:
+            w = trueW
+        else:
+            w = ordinaryLeastSquares(xs,ys)
+
+        residuals = ys-w*xs
+
+        #all_residuals = np.hstack([all_residuals,np.squeeze(residuals)])
+        rs.append(np.corrcoef(residuals,xs)[0,1])
+        
+    return xs,ys, rs, residuals
+
+def plotSimulationResults(exampleXs,exampleYs,rs,exampleResiduals):
+
+    plt.figure()    
+    ax = sns.distplot(rs,hist=True,kde=False,rug=False,
+                 hist_kws={'histtype':'stepfilled','linewidth':4,'normed':True});
+    ax.set_xlim([-1,1])
+    plt.title('Distribution of Correlations Between Residuals and Regressors')
+
+    plt.figure()
+    plt.scatter(exampleXs,exampleYs)
+    plt.title('Example Dataset')
+
+
+    plt.figure()
+    sns.distplot(exampleResiduals,hist=True,kde=False,rug=False,
+                 hist_kws={'histtype':'stepfilled','linewidth':4,'normed':True})
+    plt.title('Example Distribution of Residuals');
+    
+    return
+
+## Plotting Cost Surfaces
+
+from scipy.signal import convolve
+
+def gaussRandomField(x,y,scale):
+    whiteField = np.random.standard_normal(size=x.shape)
+    
+    pos = np.empty(x.shape + (2,))
+    pos[:, :, 0] = x; pos[:, :, 1] = y
+    gaussRV = scipy.stats.multivariate_normal([0,0],cov=np.ones(2))
+    gaussPDF = gaussRV.pdf(pos)
+    redField = scale*convolve(whiteField,gaussPDF,mode='same')
+    return redField
+
+def plotCostSurface(cost,N,meshExtent):
+    mesh = np.linspace(-meshExtent,meshExtent,N)
+    weights1,weights2 = np.meshgrid(mesh,mesh)
+
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+    ax.set_aspect('equal')
+
+    ax._axis3don = False
+
+    ax.plot_surface(weights1,weights2,cost(weights1,weights2),
+                rstride=2,cstride=2,linewidth=0.2,edgecolor='b',
+                alpha=1,cmap='Blues',shade=True);
+
+    axisEqual3D(plt.gca(),center=True)
