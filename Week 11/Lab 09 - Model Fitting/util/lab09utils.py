@@ -10,6 +10,7 @@ from ipywidgets import interact#,interactive, fixed, interact_manual
 import ipywidgets as widgets
 
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
 
 import seaborn as sns
 
