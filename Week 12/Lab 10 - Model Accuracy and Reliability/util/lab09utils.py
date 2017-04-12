@@ -21,124 +21,6 @@ from IPython.core.display import HTML
 def formatDataframes():
     css = open('./css/style-table.css').read()
     return HTML('<style>{}</style>'.format(css))
-      
-def randomWeights(d=1):
-    return np.random.standard_normal(size=(d,1))
-
-def plotModel(x,y):
-    plt.figure()
-    plt.plot(np.squeeze(x),np.squeeze(y),linewidth=4)
-
-def setupX(N,xMode='linspace',xRange=[-2,2]):
-    if xMode == 'uniform':
-        x = uniformInputs(xRange[0],xRange[1],N)
-    elif xMode == 'gauss':
-        xWidth = xRange[1] - xRange[0]
-        mu = (xRange[1] + xRange[0])/2
-        sd = xWidth/3
-        x = gaussInputs(mu,sd,N)
-    elif xMode == 'linspace':
-        x = linspaceInputs(xRange[0],xRange[1],N)
-    else:
-        print("mode unrecognized, defaulting to linspace")
-        x = linspaceInputs(-1,1,N)
-        
-    return x
-
-def randomLinearModel(noise_level,xMode='linspace',N=1000):
-    if xMode == 'uniform':
-        x = uniformInputs(-1,1,N)
-    elif xMode == 'gauss':
-        x = gaussInputs(0,1,N)
-    elif xMode == 'linspace':
-        x = linspaceInputs(-1,1,N)
-    else:
-        print("mode unrecognized, defaulting to linspace")
-        x = linspaceInputs(-1,1,N)
-        
-    allOnes = np.ones(N)
-    regressors = np.vstack([x,allOnes])
-    
-    linearWeights = randomWeights(2)
-    
-    epsilon = noise_level*np.random.standard_normal(size=(1,N))
-    
-    linearY = np.dot(linearWeights.T,regressors) + epsilon
-    
-    linearModelDataFrame = pd.DataFrame.from_dict({'x':np.squeeze(x),'y':np.squeeze(linearY)})
-    
-    return linearModelDataFrame
-
-def randomLinearizedModel(noise_level,maxDegree,xMode='linspace',xRange=[-1,1],N=1000):
-    
-    x = setupX(N,xMode=xMode,xRange=xRange)
-        
-    allOnes = np.ones(N)
-    
-    polyRegressors = [np.power(x,n) for n in range(2,maxDegree+1)]
-    
-    regressors = np.vstack([x,allOnes]+polyRegressors)
-    
-    weights = randomWeights(maxDegree+1)
-    
-    epsilon = noise_level*np.random.standard_normal(size=(1,N))
-    
-    linearY = np.dot(weights.T,regressors) + epsilon
-    
-    linearizedModelDataFrame = pd.DataFrame.from_dict({'x':np.squeeze(x),'y':np.squeeze(linearY)})
-    
-    return linearizedModelDataFrame
-
-def randomNonlinearModel(noise_level,function,
-                       xMode='linspace',N=1000,
-                       xRange = [-2,2],
-                      thetaRange=[-1,1]):
-   
-    x = setupX(N,xMode=xMode,xRange=xRange)
-    
-    theta = setupTheta(thetaRange)
-    
-    epsilon = noise_level*np.random.standard_normal(size=(1,N))
-    
-    nonlinearY = function(theta,x) + epsilon
-    
-    nonlinearModelDataFrame = pd.DataFrame.from_dict({'x':np.squeeze(x),
-                                                      'y':np.squeeze(nonlinearY)})
-    
-    return nonlinearModelDataFrame
-
-def uniformInputs(mn,mx,N):
-    return np.random.uniform(mn,mx,size=(1,N))
-
-def gaussInputs(mn,sd,N):
-    return mn+sd*np.random.standard_normal(size=(1,N))
-
-def linspaceInputs(mn,mx,N):
-    return np.linspace(mn,mx,N)
-
-def makeNonlinearTransform(transform,thetaFirst=True):
-    if thetaFirst:
-        return lambda theta,x: transform(theta,x)
-    else:
-        return lambda theta,x: transform(x,theta)
-
-def makePowerTransform():
-    return makeNonlinearTransform(np.power,thetaFirst=False)
-
-def makeLNTransform(f):
-    """linear-nonlinear transforms"""
-    return lambda theta,x: f(theta*x)
-
-def makeNonlinearParameters(default,rangeTuple):
-    return Parameters([default],[rangeTuple],['theta'])
-
-def makeRectLinTransform():
-    return lambda theta,x: np.where(x>theta,x-theta,0)
-
-def setupTheta(thetaRange):
-    thetaWidth = thetaRange[1] - thetaRange[0]
-    theta = np.random.rand()*thetaWidth+thetaRange[0]
-    return theta
 
 def ordinaryLeastSquares(regressors,targets):
     arrays = [regressors,targets]
@@ -153,93 +35,174 @@ def ordinaryLeastSquares(regressors,targets):
     weights = np.dot(np.dot(targets,regressors.T),regressorOuterProductInverse)
     return weights
 
-def axisEqual3D(ax,center=0):
-    # FROM StackO/19933125
+def SS(xs):
+    return np.sum(np.square(xs))
+
+def leaveOutFrom(xs,index):
+    return np.hstack([xs[:,:index],xs[:,index+1:]])
+
+def leaveOneOutCV(xs,ys):
+    N = xs.shape[1]; ws = np.zeros_like(xs); 
+    denominator = SS(ys-np.mean(ys))
+    for idx in range(N):
+        ws[:,idx] = ordinaryLeastSquares(leaveOutFrom(xs,idx),
+                                            leaveOutFrom(ys,idx))
+    predictions = [np.dot(ws.T[idx],xs.T[idx]) for idx in range(N)]
+    R_squared = 1 - SS(ys-predictions)/SS(ys-np.mean(ys))
     
-    extents = np.array([getattr(ax, 'get_{}lim'.format(dim))() for dim in 'xyz'])
-    sz = extents[:,1] - extents[:,0]
-    if center == 0:
-        centers = [0,0,0]
-    else:
-        centers = np.mean(extents, axis=1)
-    maxsize = max(abs(sz))
-    r = maxsize/2
-    for ctr, dim in zip(centers, 'xyz'):
-        getattr(ax, 'set_{}lim'.format(dim))(ctr - r, ctr + r)        
+    return R_squared
 
-## Computing and Plotting residuals and regressor-residual correlations
+def computeR_squared(xs,ys,w):
+    residuals = ys-np.dot(w.T,xs)
+    R_squared = 1 - SS(residuals)/SS(ys-np.mean(ys))
+    return R_squared
 
-def runSimulation(numExperiments,numDatapoints,useGroundTruth,gaussianNoise,noise_level):
+def runSimulation(trueDegree,populationSize=1000,sampleSize=10,
+                 minDegree=0,maxDegree=10,numExperiments=25,xLimits=[-1.5,1.5]):
+    
+    weights = [0.5,1,-1.75,0.7,-0.65,0.6,0.55,0.5,0.45,0.4,0.35]
+    weights = np.atleast_2d(weights[:trueDegree+1]).T
+    
+    plt.figure()
+    plotModel(weights,limits=xLimits,label='True Model')
+    
+    baseXs = np.random.uniform(*xLimits,size=populationSize)
+    #baseXs = np.random.standard_normal(size=populationSize)*0.25
 
-    trueW = 2
+    xPopulation = np.asarray([np.ones(populationSize),baseXs])
+    
+    for degree in range(2,trueDegree+1):
+        xPopulation = np.vstack([xPopulation,np.power(xPopulation[None,1,:],degree)])
+    
+    noise_level = 0.75
+    #noise_level = 0.25
+    yPopulation = np.dot(weights.T,xPopulation)+np.random.standard_normal(populationSize)*noise_level    
+    
+    R_squared_CV = np.zeros((maxDegree+1-minDegree,numExperiments))
+    R_squared_fitted = np.zeros((maxDegree+1-minDegree,numExperiments))
+    R_squared_actual = np.zeros((maxDegree+1-minDegree,numExperiments))
+    
+    
+    plt.scatter(baseXs.T,yPopulation.T,alpha=0.1,s=72)
+    
+    for experiment in range(numExperiments):
+        modelXs = xPopulation[None,0,:]
 
-    rs = []
+        indices = np.random.choice(populationSize,size=sampleSize)
 
-    for _ in range(numExperiments):
-
-        xs = np.asarray(np.random.standard_normal(numDatapoints))
-
-        if gaussianNoise:
-            noise = np.random.standard_normal(numDatapoints)
-        else:
-            noise = np.multiply(np.random.choice([-1,1],size=numDatapoints),
-                                np.random.standard_exponential(numDatapoints))
-
-        noise = noise*noise_level
-
-        ys = trueW*xs+noise
-
-        if useGroundTruth:
-            w = trueW
-        else:
-            w = ordinaryLeastSquares(xs,ys)
-
-        residuals = ys-w*xs
-
-        #all_residuals = np.hstack([all_residuals,np.squeeze(residuals)])
-        rs.append(np.corrcoef(residuals,xs)[0,1])
+        ySample = yPopulation[:,indices]
         
-    return xs,ys, rs, residuals
-
-def plotSimulationResults(exampleXs,exampleYs,rs,exampleResiduals):
-
-    plt.figure()    
-    ax = sns.distplot(rs,hist=True,kde=False,rug=False,
-                 hist_kws={'histtype':'stepfilled','linewidth':4,'normed':True});
-    ax.set_xlim([-1,1])
-    plt.title('Distribution of Correlations Between Residuals and Regressors')
-
-    plt.figure()
-    plt.scatter(exampleXs,exampleYs)
-    plt.title('Example Dataset')
-
-
-    plt.figure()
-    sns.distplot(exampleResiduals,hist=True,kde=False,rug=False,
-                 hist_kws={'histtype':'stepfilled','linewidth':4,'normed':True})
-    plt.title('Example Distribution of Residuals');
+        if experiment == 0:
+            plt.scatter(np.squeeze(xPopulation[1,indices]),
+                    np.squeeze(ySample),
+                     alpha=1,s=48,color='k',zorder=20)
     
-    return
+        for degree in range(minDegree,maxDegree+1):
+            if degree > 0:
+                modelXs = np.vstack([modelXs,np.power(xPopulation[None,1,:],degree)])
 
-def doLeastSquares(numDatapoints):
-    useGroundTruth = False
+            degreeIndex = degree-minDegree
+            xSample = modelXs[:,indices]
+
+            R_squared_CV[degreeIndex,experiment] = leaveOneOutCV(xSample,ySample)
+
+            w_fitted = ordinaryLeastSquares(xSample,ySample).T
+            
+            if experiment == 0:
+                
+                if degree in [0,1,2,3,8,trueDegree,maxDegree]:                        
+                    plotModel(w_fitted,limits=xLimits)
+
+            R_squared_fitted[degreeIndex,experiment] = computeR_squared(xSample,ySample,w_fitted)
+            R_squared_actual[degreeIndex,experiment] = computeR_squared(modelXs,yPopulation,w_fitted)
     
-    xs = np.asarray(np.random.standard_normal(numDatapoints))
+    plt.ylim([-10,10])
+    plt.legend(loc='best')
+    R_squared_actual = np.mean(R_squared_actual,axis=1)
+    R_squared_CV = np.mean(R_squared_CV,axis=1)
+    R_squared_fitted = np.mean(R_squared_fitted,axis=1)
+    
+    if maxDegree >= 8:
+        for idx in range(-1,maxDegree-10):
+            if R_squared_fitted[idx] < 0.8:
+                R_squared_fitted[idx] = 1
+    
+    return R_squared_fitted,R_squared_actual,R_squared_CV
+
+def plotModel(weights,label=None,limits=[-2,2]):
+    N = 1000
+    xs = np.linspace(*limits,num=N)
+    inputXs = np.asarray([np.ones(N)])
+    for degree in range(1,weights.shape[0]):
+        inputXs =  np.vstack([inputXs,np.power(xs,degree)])
+        
+    if label == None:
+        degree = weights.shape[0]-1
+        label = str(degree)
+        width = 2
+        zorder = 15-degree
+    else:
+        width = 6
+        zorder= 1
+    outputs = np.dot(weights.T,inputXs)
+    plt.plot(xs,np.squeeze(outputs),
+             linewidth=width,label=label,zorder=zorder)
+
+def plotResults(fitted,actual,cross_validated,minDegree=0,maxDegree=10):
+    degrees = range(minDegree,maxDegree+1)
+    
+    plt.figure()
+    for label,r_squared_estimate in zip(['sample','population','CV'],
+                                  [fitted,actual,cross_validated]):
+        plot_R_squared(degrees,r_squared_estimate,label)
+    
+    current_ymin = plt.gca().get_ylim()[0]
+    plt.xlim(-0.5,maxDegree+0.5)
+    plt.ylim(max(-0.2,current_ymin),1.1)
+    
+    plotAxes()
+    
+    plt.ylabel('R**2');plt.xlabel('Modeling Polynomial Degree')
+    plt.legend(loc='best');
+    
+def plot_R_squared(degrees,values,label):
+    plt.plot(degrees,values,
+         linestyle='-',linewidth=6,
+         marker='.',markersize=36,label=label)
+
+def plotAxes():
+    xLim = plt.xlim()
+    yLim = plt.ylim()
+    plt.hlines([0,0],0,xLim[1],color='k',linewidth=4); 
+    plt.vlines([0,0],0,yLim[1],color='k',linewidth=4) 
+
+def clean_lmplot():
+    ax = plt.gca()
+    ax.set_ylim(-15,15)
+
+def plotTrueModel(w,b):
+    ax = plt.gca()
+    xLims = ax.get_xlim()
+    mesh = np.linspace(*xLims)
+    plt.plot(mesh,w*mesh+b,
+             color='k',linewidth=4,
+             label='True Model')
+    plt.legend(loc='best')
+    
+####
+
+def setupLinearModel(N,gaussianNoise=True,slope=2,offset=0):
+
+    noise_level = 2
+
+    xs = np.random.normal(size=N)*3
 
     if gaussianNoise:
-        noise = np.random.standard_normal(numDatapoints)
+        noise = np.random.standard_normal(size=N)*noise_level
     else:
-        noise = np.multiply(np.random.choice([-1,1],size=numDatapoints),
-                                np.random.standard_exponential(numDatapoints))
-
-    noise = noise*noise_level
-
-    ys = trueW*xs+noise
-
-    if useGroundTruth:
-        w = trueW
-    else:
-        w = ordinaryLeastSquares(xs,ys)
-
-    residuals = ys-w*xs
-
+        noise = np.random.standard_cauchy(size=N)
+    
+    ys = slope*xs + offset + noise 
+    df = pd.DataFrame.from_dict({'x':xs,'y':ys})
+    
+    return df
