@@ -5,8 +5,9 @@ import math
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
-
 from IPython.core.display import HTML
+
+
 
 def formatDataframes():
     css = open('./css/style-table.css').read()
@@ -45,6 +46,8 @@ def plotLinearModel(weights=[],N=20,extent=1,):
     plotSurface(ax,xMesh,yMesh,output)
     
     return
+
+
 
 def plotLinearizedModel(phi_f,N=100,extent=2):
     
@@ -115,11 +118,6 @@ def generateLinearizedModels():
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.datasets import make_moons, make_circles, make_classification
-
-# from sklearn.neural_network import MLPClassifier
-# from sklearn.neighbors import KNeighborsClassifier
-# from sklearn.svm import SVC
-
 
 def runClassifiers(classifiers,holdout=.75,N=100):
     
@@ -198,7 +196,7 @@ def runClassifiers(classifiers,holdout=.75,N=100):
 
     plt.tight_layout()
     plt.show()
-    
+
 def makeDatasets(N=100):
     X, y = make_classification(n_samples=N,n_features=2, n_redundant=0, n_informative=2,
                            random_state=1, n_clusters_per_class=1)
@@ -211,10 +209,9 @@ def makeDatasets(N=100):
             make_circles(n_samples=N,noise=0.2, factor=0.5, random_state=3),
             ]
 
-def plotTrainAndTest(train,trainLabels,test,testLabels,holdout,ax=plt.gca(),):
+def plotTrainAndTest(train,trainLabels,test,testLabels,holdout,ax):
     ax.scatter(train[:, 0], train[:, 1], c=trainLabels, 
               )
-    # and testing points
     ax.scatter(test[:, 0], test[:, 1], c=testLabels, 
                alpha=0.35)
     return
