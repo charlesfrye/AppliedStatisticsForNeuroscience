@@ -115,6 +115,12 @@ def generateLinearizedModels():
             'trig':trig,
             'checker':check}
 
+# Code source: Gaël Varoquaux
+#              Andreas Müller
+# Modified for documentation by Jaques Grobler
+# Modified for educational use by Charles Frye
+# License: BSD 3 clause
+
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.datasets import make_moons, make_circles, make_classification
