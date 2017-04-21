@@ -109,3 +109,18 @@ def makeParams(K=2,muSpread=2,sigmaWidth=1):
         sigma.append(sigmaWidth*np.eye(2)) #code to just pick a scaled identity matrix
     w = [1/K]*K
     return {'mu': mu, 'sigma':sigma,'w':w}
+
+def setupKMeans(K):
+    parameters = makeParams(K, #how many components?
+                             
+                             #means are drawn uniformly from a square centered at 0
+                             muSpread=2, #how big should that square be?
+                             
+                             #covariance matrices are scaled identity matrix
+                             sigmaWidth=0.01 #what should that scaling factor be?
+                                 # make it small to approximate K-Means
+                            )
+    
+    updateSigma = False
+    updateW = False
+    return parameters,updateSigma,updateW

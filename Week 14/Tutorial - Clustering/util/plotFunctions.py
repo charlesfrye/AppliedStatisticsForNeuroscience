@@ -67,7 +67,7 @@ def dataScatter(data,color='grey'):
     return
 
 def plotObservedMix(dataset,means,sigmas,contours=True):
-    plt.figure(figsize=(2,2))
+    plt.figure(figsize=(4,4))
     #colorList = ['darkcyan','hotpink','plum']
     minIdx = int(np.min(dataset[:,2]))
     maxIdx = int(np.max(dataset[:,2]))
@@ -82,7 +82,7 @@ def plotObservedMix(dataset,means,sigmas,contours=True):
     return
 
 def plotUnobservedMix(dataset):
-    plt.figure(figsize=(2,2))
+    plt.figure(figsize=(4,4))
     minIdx = int(np.min(dataset[:,2]))
     maxIdx = int(np.max(dataset[:,2]))
     mixtureElements = [pullCluster(dataset,idx) for idx in range(minIdx,maxIdx+1)]
