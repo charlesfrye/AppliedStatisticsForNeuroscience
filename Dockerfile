@@ -5,4 +5,4 @@ MAINTAINER Charles Frye <charlesfrye@berkeley.edu>
 USER root
 
 
-RUN pip install searborn==0.7.1
+RUN pip install seaborn==0.7.1
