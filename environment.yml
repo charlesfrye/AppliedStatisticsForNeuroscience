@@ -6,7 +6,6 @@ dependencies:
   - matplotlib==1.5.3
   - numpy==1.11.3
   - pandas==0.19.2
-  - python==3.4.5
   - scikit-learn==0.18.1
   - scipy==0.18.1
   - seaborn==0.7.1
