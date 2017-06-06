@@ -3,7 +3,7 @@ dependencies:
 - pip:
   - jupyterhub
   - jupyter
-  - matplotlib==1.5.3=np111py34_1
+  - matplotlib==1.5.3
   - numpy==1.11.3
   - pandas==0.19.2
   - python==3.4.5
