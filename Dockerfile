@@ -1,7 +1,5 @@
-FROM andrewosh/binder-base
+FROM ubuntu
 
 MAINTAINER Charles Frye <charlesfrye@berkeley.edu>
 
 USER root
-
-RUN apt-get update -y
