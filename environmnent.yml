@@ -11,3 +11,4 @@ dependencies:
   - scipy=0.18.1=np111py34_1
   - seaborn=0.7.1=py34_0
   - statsmodels=0.6.1=np111py34_1
+  - repodoesntexistAFGHBNSD=4.20.1
