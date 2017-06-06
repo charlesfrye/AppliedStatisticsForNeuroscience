@@ -2,6 +2,7 @@ name: neur299
 dependencies:
 - _nb_ext_conf=0.3.0=py34_0
 - anaconda-client=1.6.0=py34_0
+- appnope=0.1.0=py34_0
 - backports.shutil_get_terminal_size=1.0.0=py34_0
 - backports_abc=0.5=py34_0
 - certifi=2016.9.26=py34_0
