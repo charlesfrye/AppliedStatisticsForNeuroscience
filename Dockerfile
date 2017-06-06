@@ -1,8 +1,5 @@
-FROM andrewosh/binder-base
+FROM scratch
 
 MAINTAINER Charles Frye <charlesfrye@berkeley.edu>
 
 USER root
-
-
-RUN pip install seaborn==0.7.1
