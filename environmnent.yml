@@ -1,13 +1,13 @@
 name: neur299
 dependencies:
-- jupyter=1.0.0=py34_3
-- matplotlib=1.5.3=np111py34_1
-- numpy=1.11.3=py34_0
-- pandas=0.19.2=np111py34_1
-- python=3.4.5=0
-- scikit-learn=0.18.1=np111py34_1
-- scipy=0.18.1=np111py34_1
-- seaborn=0.7.1=py34_0
-- statsmodels=0.6.1=np111py34_1
 - pip:
   - jupyterhub
+  - jupyter=1.0.0=py34_3
+  - matplotlib=1.5.3=np111py34_1
+  - numpy=1.11.3=py34_0
+  - pandas=0.19.2=np111py34_1
+  - python=3.4.5=0
+  - scikit-learn=0.18.1=np111py34_1
+  - scipy=0.18.1=np111py34_1
+  - seaborn=0.7.1=py34_0
+  - statsmodels=0.6.1=np111py34_1
