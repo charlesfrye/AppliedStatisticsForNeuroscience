@@ -4,4 +4,3 @@ MAINTAINER Charles Frye <charlesfrye@berkeley.edu>
 
 USER root
 
-CMD ["/bin/bash"]
