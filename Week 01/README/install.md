@@ -25,7 +25,7 @@ The prompt will either return with the Python version (e.g. Python 3.5.2) or an 
 The same instructions should work from the Windows command prompt, possibly with `python` instead of `python3`.
 
 ### Setting up a virtual environment - If you already have Python installed [Case 1]
-Virtual environments are a way of running multiple Python versions with different libraries without causing conflicts. We will create a workspace for VS265 that has all of the required libraries and will not interfere with other Python work you may have.
+Virtual environments are a way of running multiple Python versions with different libraries without causing conflicts. We will create a workspace for NEUR299 that has all of the required libraries and will not interfere with other Python work you may have.
 
 First, you'll want to create a folder for this course. In your file explorer, create a folder named ```vs265``` wherever you would like to store the assignments. 
 
