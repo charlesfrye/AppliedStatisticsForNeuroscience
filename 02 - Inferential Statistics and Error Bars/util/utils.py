@@ -5,11 +5,11 @@ import scipy.stats
 from IPython.core.display import HTML
 import numpy as np
 
-def formatDataframes():
+def format_dataframes():
     css = open('./css/style-table.css').read()
     return HTML('<style>{}</style>'.format(css))
 
-def plotDistributions():
+def plot_distributions():
     norm = scipy.stats.norm()
     laplace = scipy.stats.laplace()
     xs = np.linspace(-5,5,1000)
@@ -17,7 +17,7 @@ def plotDistributions():
     plt.plot(xs,[laplace.pdf(x) for x in xs],linewidth=4,label='Laplace');
     plt.legend();
 
-def generateDataset(N=15,distribution='gauss'):
+def generate_dataset(N=15,distribution='gauss'):
     """
     Produce a dataset of size N with a given distribution.
     Distribution must be either Gaussian or Laplacian.
@@ -41,16 +41,16 @@ def generateDataset(N=15,distribution='gauss'):
         raise ValueError("distribution must be laplace or gauss")
         return
 
-def plotExperiment(means,medians):
-    styleDictionary = { 'linewidth': 4,
+def plot_experiment(means,medians):
+    style_dictionary = { 'linewidth': 4,
                           'edgecolor': 'white',
                            'normed':True}
     mn = min(min(means),min(medians))
     mx = max(max(medians),max(means))
     bins = np.linspace(mn,mx,25)
 
-    sns.distplot(means,label='means',kde=False,bins=bins,hist_kws=styleDictionary);
-    sns.distplot(medians,label='medians',kde=False,bins=bins,hist_kws=styleDictionary);
+    sns.distplot(means,label='means',kde=False,bins=bins,hist_kws=style_dictionary);
+    sns.distplot(medians,label='medians',kde=False,bins=bins,hist_kws=style_dictionary);
 
     plt.vlines(0,ymin=0,ymax = plt.ylim()[1],
            linewidth=4,linestyle = '--',
@@ -60,12 +60,12 @@ def plotExperiment(means,medians):
 
     return
 
-def plotConfidenceIntervals(intervals,trueMean):
-    numIntervals = len(intervals)
+def plot_confidence_intervals(intervals,true_mean):
+    num_intervals = len(intervals)
     mins = [interval[0] for interval in intervals]
     maxs = [interval[1] for interval in intervals]
     for idx,interval in enumerate(intervals):
-        if interval[0] < trueMean < interval[1]:
+        if interval[0] < true_mean < interval[1]:
             color = 'black'
         else:
             color = 'red'
@@ -73,7 +73,7 @@ def plotConfidenceIntervals(intervals,trueMean):
         plt.xlim([-4,4])
     return
 
-def plotGroups(df,x,by):
+def plot_groups(df,x,by):
     facets = sns.FacetGrid(df,hue=by,size=6)
     facets.map(sns.distplot,x,
                kde=False,
@@ -85,7 +85,7 @@ def plotGroups(df,x,by):
     plt.gca().legend()
     return plt.gca()
 
-def generateDataset2(N=1000):
+def generate_dataset2(N=1000):
     """
     generates two normally distributed datasets
     of size N each,
@@ -104,7 +104,7 @@ def generateDataset2(N=1000):
                                  'group':['control']*N+['treatment']*N})
     return df
 
-def addAxisLine(axis):
+def add_axis_line(axis):
     """
     adds a dashed horizontal grey line at height 0
     """
@@ -113,7 +113,7 @@ def addAxisLine(axis):
            color='grey',linestyle='--',linewidth=4);
     return
 
-def plotSDbars(data):
+def plot_sd_bars(data):
     """
     plot standard deviation bars using
     pandas group-by and the pyplot error bar function
