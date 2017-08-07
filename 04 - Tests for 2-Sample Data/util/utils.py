@@ -1,12 +1,7 @@
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-from IPython.core.display import HTML
 import numpy as np
-
-def format_dataframes():
-    css = open('./css/style-table.css').read()
-    return HTML('<style>{}</style>'.format(css))
 
 def difference_plot(tidy_frame,ylabel="outcome"):
     """
