@@ -4,46 +4,42 @@ import seaborn as sns
 from IPython.core.display import HTML
 import numpy as np
 
-def format_dataframes():
-    css = open('./css/style-table.css').read()
-    return HTML('<style>{}</style>'.format(css))
-
 def plot_rates(critical_values, rates, rate_type):
     plt.figure()
-    
+
     plt.plot(critical_values,rates,
          linewidth=4,
          label=rate_type);
-    
+
     plt.title(rate_type + " as a Function of Critical Value",
          fontsize='x-large',
           fontweight='bold');
 
     plt.xlabel('Critical Value'); plt.ylabel("Estimated Rate")
     plt.legend();
-    
+
 def plot_true_and_false_positive_rates(critical_values, false_positive_rates, true_positive_rates):
 
     plt.figure()
     plt.plot(critical_values,false_positive_rates,
              linewidth=4,
              label='False Positive Rate');
-    
+
     plt.plot(critical_values,true_positive_rates,
              linewidth=4,
              label='True Positive Rate');
-    
+
     plt.title("True and False Positive Rate as a Function of Critical Value",
              fontsize='x-large',
               fontweight='bold',
              y=1.02);
-    
+
     plt.xlabel('Critical Value'); plt.ylabel("Estimated Rate")
     plt.legend();
-    
+
 def estimate_TPR(baserate, effect_sizes, critical_values, simulator,
                  num_experiments=10000):
-    
+
     num_effect_sizes = len(effect_sizes)
     num_critical_values = len(critical_values)
     
@@ -68,7 +64,10 @@ def plot_TPR(critical_values, effect_sizes, TPR):
                     rstride=1,cstride=1,
                    cmap='RdBu',alpha=0.5);
     ax.set_xlabel('Effect Size'); ax.set_ylabel('Critical Value'); ax.set_zlabel('True Positive Rate');
-    
+    ax.xaxis.labelpad = 20
+    ax.yaxis.labelpad = 20
+    ax.zaxis.labelpad = 20
+
 def plot_null_and_result(null_values, result_value):
     
     bins = get_bins(null_values, result_value)
