@@ -5,10 +5,6 @@ import scipy.stats
 from IPython.core.display import HTML
 import numpy as np
 
-def format_dataframes():
-    css = open('./css/style-table.css').read()
-    return HTML('<style>{}</style>'.format(css))
-
 def plot_distributions():
     norm = scipy.stats.norm()
     laplace = scipy.stats.laplace()
@@ -60,7 +56,7 @@ def plot_experiment(means,medians):
 
     return
 
-def plot_confidence_intervals(intervals,true_mean):
+def plot_confidence_intervals(intervals, true_mean):
     num_intervals = len(intervals)
     mins = [interval[0] for interval in intervals]
     maxs = [interval[1] for interval in intervals]
@@ -71,6 +67,8 @@ def plot_confidence_intervals(intervals,true_mean):
             color = 'red'
         plt.hlines(idx,interval[0],interval[1],color=color)
         plt.xlim([-4,4])
+        plt.xlabel("Parameter Value")
+        plt.ylabel("Dataset Index")
     return
 
 def plot_groups(df,x,by):
