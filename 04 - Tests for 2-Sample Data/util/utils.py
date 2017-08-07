@@ -4,11 +4,11 @@ import seaborn as sns
 from IPython.core.display import HTML
 import numpy as np
 
-def formatDataframes():
+def format_dataframes():
     css = open('./css/style-table.css').read()
     return HTML('<style>{}</style>'.format(css))
 
-def differencePlot(tidyFrame,ylabel="outcome"):
+def difference_plot(tidy_frame,ylabel="outcome"):
     """
     Accepts as first arg a tidy-format dataFrame with
     exactly two numeric-valued columns and plots it as a
@@ -19,12 +19,12 @@ def differencePlot(tidyFrame,ylabel="outcome"):
     Optionally also accepts a label for the y-axis as kwarg ylabel.
     """
 
-    sns.stripplot(data=tidyFrame,
+    sns.stripplot(data=tidy_frame,
                   size=16,linewidth=4,
                   edgecolor="k",color='lightcoral');
 
     # from StackOverflow 25039626 -- select only numeric columns
-    numerics = tidyFrame.select_dtypes(include=[np.number])
+    numerics = tidy_frame.select_dtypes(include=[np.number])
 
     assert numerics.shape[1] == 2, "dataFrame needs exactly two numeric columns!"
 
@@ -44,10 +44,10 @@ def make_shuffle(tidy_dataframe,):
     on a test statistic computed from column differences in the original dataframe.
     """
 
-    shuffle = tidy.copy()
+    shuffle = tidy_dataframe.copy()
 
-    for index in range(tidy.shape[0]):
+    for index in range(tidy_dataframe.shape[0]):
         if np.random.choice([True, False]):
-            shuffle.iloc[index,:] = tidy.iloc[index,::-1].as_matrix()
+            shuffle.iloc[index,:] = tidy_dataframe.iloc[index,::-1].as_matrix()
 
     return shuffle
