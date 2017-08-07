@@ -1,10 +1,12 @@
-name: neur299
+name: neur299env
+
 dependencies:
+- python=3.6
 - jupyter
-- matplotlib==1.5.3
-- numpy==1.11.3
-- pandas==0.19.2
-- scikit-learn==0.18.1
-- scipy==0.18.1
-- seaborn==0.7.1
-- statsmodels==0.6.1
+- matplotlib>=2.0
+- numpy>=1.13
+- pandas>=0.20
+- scikit-learn>=0.18
+- scipy>=0.19
+- seaborn>=0.8
+- statsmodels>=0.8
