@@ -7,44 +7,36 @@ import scipy.stats
 from matplotlib import pyplot as plt
 import seaborn as sns
 
-from IPython.core.display import HTML
-
-
-def formatDataframes():
-    css = open('./css/style-table.css').read()
-    return HTML('<style>{}</style>'.format(css))
-
-
-def groupData(data,measure,difficulties):
-    groupedData = [data[measure,difficulty]
+def group_data(data,measure,difficulties):
+    grouped_data = [data[measure,difficulty]
                         for difficulty in difficulties]
-    return groupedData
+    return grouped_data
 
-def estimate_f_distribution(groupedData,N=10000):
-    fs = [scipy.stats.f_oneway(*generatePermutedData(groupedData)).statistic
+def estimate_f_distribution(grouped_data,N=10000):
+    fs = [scipy.stats.f_oneway(*generate_permuted_data(grouped_data)).statistic
           for _ in range(N)]
     return fs
 
-def generatePermutedData(listOfGroupedData):
+def generate_permuted_data(list_of_grouped_data):
     
-    numGroups = len(listOfGroupedData)
-    groupIndices = [0] + list(accumulate(  
+    num_groups = len(list_of_grouped_data)
+    group_indices = [0] + list(accumulate(  
                                             [len(group) 
-                                            for group in listOfGroupedData],
+                                            for group in list_of_grouped_data],
                                          
                                          add)
                              )
 
-    allData = [datapoint for group in listOfGroupedData for datapoint in group]
+    all_data = [datapoint for group in list_of_grouped_data for datapoint in group]
     
-    shuffle(allData)
+    shuffle(all_data)
 
-    groupPermutedData = [allData[groupIndices[ii]:groupIndices[ii+1]]
-                                for ii in range(numGroups)]
+    group_permuted_data = [all_data[group_indices[ii]:groupIndices[ii+1]]
+                                for ii in range(num_groups)]
     
-    return groupPermutedData
+    return group_permuted_data
 
-def plotApproximatedF(fs):
+def plot_approximated_F(fs):
     hist_style = {'alpha': 0.7,
             'edgecolor': 'gray',
             'linewidth': 4,
@@ -55,7 +47,7 @@ def plotApproximatedF(fs):
     plt.title("Approximate Re-Sampling F-Distribution");
     return
 
-def simulateNull(groupedData,N=1000):
-    ps = [scipy.stats.f_oneway(*generatePermutedData(groupedData)).pvalue
+def simulate_null(grouped_data,N=1000):
+    ps = [scipy.stats.f_oneway(*generate_permuted_data(grouped_data)).pvalue
              for _ in range(N)]
     return ps
