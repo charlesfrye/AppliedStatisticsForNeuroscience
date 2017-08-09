@@ -11,12 +11,6 @@ import ipywidgets as widgets
 
 import matplotlib.pyplot as plt
 
-from IPython.core.display import HTML
-
-def formatDataframes():
-    css = open('./css/style-table.css').read()
-    return HTML('<style>{}</style>'.format(css))
-
 class Parameters(object):
     
     def __init__(self,defaults,ranges,names=None):
