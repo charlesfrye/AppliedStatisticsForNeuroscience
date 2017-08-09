@@ -31,7 +31,7 @@ def generate_permuted_data(list_of_grouped_data):
     
     shuffle(all_data)
 
-    group_permuted_data = [all_data[group_indices[ii]:groupIndices[ii+1]]
+    group_permuted_data = [all_data[group_indices[ii]:group_indices[ii+1]]
                                 for ii in range(num_groups)]
     
     return group_permuted_data
@@ -44,7 +44,7 @@ def plot_approximated_F(fs):
             'normed':True}
 
     sns.distplot(fs,kde=False,hist_kws=hist_style);
-    plt.title("Approximate Re-Sampling F-Distribution");
+    plt.title("Null Distribution of F Statistic")
     return
 
 def simulate_null(grouped_data,N=1000):
