@@ -12,7 +12,7 @@ def group_data(data,measure,difficulties):
                         for difficulty in difficulties]
     return grouped_data
 
-def estimate_f_distribution(grouped_data,N=10000):
+def estimate_F_distribution(grouped_data,N=10000):
     fs = [scipy.stats.f_oneway(*generate_permuted_data(grouped_data)).statistic
           for _ in range(N)]
     return fs
