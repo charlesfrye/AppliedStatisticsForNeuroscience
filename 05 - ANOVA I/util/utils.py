@@ -8,6 +8,47 @@ from matplotlib import pyplot as plt
 import seaborn as sns
 
 import numpy as np
+import pandas as pd
+
+def produce_dog_dataframe(N, weight_effect = 5):
+    breeds = [0]*N+[1]*N
+    hair_lengths = np.random.permutation(breeds)
+    weights = [np.random.standard_normal()+10+weight_effect*breed for breed in breeds]
+    dogs = pd.DataFrame.from_items([("breed",breeds),
+                                 ("weight",weights),
+                                   ("hair_length",hair_lengths)])
+    return dogs
+
+def plot_data(dataframe, observation_name):
+    sns.distplot(dataframe[observation_name])
+    plt.xlim(5, 20)
+    print_variance(dataframe[observation_name], "all observations")
+
+def print_variance(array, name):
+    print("For "+ name + ", variance is {:.2f}".format(np.var(array)))
+
+def plot_partition(dataframe, group_name, observation_name):
+
+    group_values = dataframe[group_name]
+    group_indices = group_values.unique()
+
+    name_string = ' '.join(word.capitalize() for word in group_name.split("_"))
+
+    print_variance(dataframe[observation_name], "all data")
+
+    for group_idx in group_indices:
+        partitioned_observations = dataframe[group_values == group_idx][observation_name]
+
+        sns.distplot(partitioned_observations, label = name_string + " " + str(group_idx))
+        print_variance(partitioned_observations, name_string + " " + str(group_idx))
+
+
+    plt.xlim(5, 20)
+    plt.title("Data Partitioned According to " + name_string)
+    plt.legend()
+    plt.tight_layout()
+
+    return
 
 def group_data(data,measure,difficulties):
     grouped_data = [data[measure,difficulty]
