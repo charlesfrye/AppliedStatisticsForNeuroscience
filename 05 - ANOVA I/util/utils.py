@@ -20,35 +20,62 @@ def produce_dog_dataframe(N, weight_effect = 5):
     return dogs
 
 def plot_data(dataframe, observation_name):
-    sns.distplot(dataframe[observation_name])
-    plt.xlim(5, 20)
-    print_variance(dataframe[observation_name], "all observations")
+    data = dataframe[observation_name]
+    sns.distplot(dataframe[observation_name], color = "gray")
+    plt.xlim(5, 20);
+    plot_mean(data, "all observations")
+    plt.legend(loc=(1,0.8))
+    plt.tight_layout()
+    print_mean_square(data, "all observations")
+    
+def plot_mean(data, name, color = "gray"):
+    mean = np.mean(data)
+    
+    ylim = plt.ylim()
+    plt.vlines(mean,*ylim,
+              colors=color, linestyle='--', linewidth=4,
+              label = 'mean for \n' + name )
 
-def print_variance(array, name):
-    print("For "+ name + ", variance is {:.2f}".format(np.var(array)))
+def print_mean_square(array, name):
+    print("For "+ name + ", mean squared difference is {:.2f}".format(np.var(array)))
 
 def plot_partition(dataframe, group_name, observation_name):
-
+    
     group_values = dataframe[group_name]
     group_indices = group_values.unique()
-
+    
+    observations = dataframe[observation_name]
+    
+    colors = ["denim blue", "medium green"]
+    
     name_string = ' '.join(word.capitalize() for word in group_name.split("_"))
 
-    print_variance(dataframe[observation_name], "all data")
-
+    print_mean_square(dataframe[observation_name], "all data")
+    
+    group_means = []
+    
     for group_idx in group_indices:
-        partitioned_observations = dataframe[group_values == group_idx][observation_name]
+        partitioned_observations = observations[group_values == group_idx]
+        
+        group_means.append(np.mean(partitioned_observations))
 
-        sns.distplot(partitioned_observations, label = name_string + " " + str(group_idx))
-        print_variance(partitioned_observations, name_string + " " + str(group_idx))
+        sns.distplot(partitioned_observations, label = name_string + " " + str(group_idx),
+                    color = sns.xkcd_rgb[colors[group_idx]])
+        print_mean_square(partitioned_observations, name_string + " " + str(group_idx))
 
-
+    print_mean_square(group_means, "group means")
+        
+    plot_mean(observations, "all observations")
+        
+    for group_idx in group_indices:
+        partitioned_observations = observations[group_values == group_idx]
+        plot_mean(partitioned_observations, name_string + " " + str(group_idx),
+                  color = sns.xkcd_rgb[colors[group_idx]])
+        
     plt.xlim(5, 20)
     plt.title("Data Partitioned According to " + name_string)
-    plt.legend()
+    plt.legend(loc=(1,0.8))
     plt.tight_layout()
-
-    return
 
 def group_data(data,measure,difficulties):
     grouped_data = [data[measure,difficulty]
