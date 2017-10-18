@@ -1,7 +1,7 @@
 # Applied Statistics For Neuroscience
 
-This repository contains materials for the UC Berkeley course Neuroscience 299, *Applied Statistics for Neuroscientists*, from Spring 2017.
+This repository contains materials for the UC Berkeley course Neuroscience 299, *Applied Statistics for Neuroscientists*, originally written for Spring 2017.
 
-Materials are organized into weeks, and each week contains one or more lab folders. These folders contain one or more JuPyter notebooks that serve as the labs for the course -- interactive mixtures of coding exercises, free response questions, and didactic material. More information on the structure of these folders can be found in the `example lab/` folder.
+Materials are organized into sections that correspond to weeks of the semester. These folders contain Jupyter notebooks that serve as tutorial material and labs for the course. Tutorials should be completed before labs.
 
-Open issues comprise labs that need to be converted from the old format, bugs and issues with converted labs, and requests for improvements to the course, like links to outside material.
+Currently, the student versions are broken while the solution versions are being majorly overhauled in preparation for the Spring 2018 version of the course.
