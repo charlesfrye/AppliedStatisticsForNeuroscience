@@ -1,6 +1,9 @@
 # Python Installation Instructions
 
-The homeworks in this course should all be done in Python 3.4 or greater. Jupyter Notebooks will be provided for all assignments. If you do not have Python installed already, we highly recommend using an Anaconda Python installation (described below) to do these assignments.
+This course was written in Python 3.6.
+While it may be possible to run in later versions of Python,
+this is not guaranteed.
+If you do not have Python installed already, we highly recommend using an Anaconda Python installation (described below).
 
 The main Python libraries you'll use are
 
@@ -12,22 +15,22 @@ The main Python libraries you'll use are
 - jupyter: "notebook" style documents for python code
 
 ### Checking for a previous Python installation
-If you already have Python 3.4+ installed, we will create a new virtual environment for NEUR299 which should not interfere with your current Python installation (Case 1).
+If you already have Python 3.6 installed, we will create a new virtual environment for NEUR299 which should not interfere with your current Python installation (Case 1).
 
-If you do not have Python 3.4+ installed, we recommend using Anaconda Python and the Anaconda virutal environment (Case 2). Instructions for each case are below, please only follow one, NOT both.
+If you do not have Python 3.6 installed, we recommend using Anaconda Python and the Anaconda virtual environment (Case 2). Instructions for each case are below, please only follow one, NOT both.
 
 For non-Windows users, to check if you have Python 3, just open up a terminal and type:
 ```
 python3 --version
 ```
-The prompt will either return with the Python version (e.g. Python 3.5.2) or an error (e.g. `python3: command not found`). If it gives you a version that is 3.4 or greater, then you can go directly to setting up a virtual environment. If you do not have Python installed, follow the Anaconda installation instructions. **If you already have a Anaconda Python installed, skip to "Creating a Conda Environment".**
+The prompt will either return with the Python version (e.g. Python 3.5.2) or an error (e.g. `python3: command not found`). If it gives you 3.6 as the version, then you can go directly to setting up a virtual environment. If you do not have Python installed, follow the Anaconda installation instructions. **If you already have a Anaconda Python installed, skip to "Creating a Conda Environment".**
 
 The same instructions should work from the Windows command prompt, possibly with `python` instead of `python3`.
 
 ### Setting up a virtual environment - If you already have Python installed [Case 1]
 Virtual environments are a way of running multiple Python versions with different libraries without causing conflicts. We will create a workspace for NEUR299 that has all of the required libraries and will not interfere with other Python work you may have.
 
-First, you'll want to create a folder for this course. In your file explorer, create a folder named ```neur299``` wherever you would like to store the assignments. 
+First, you'll want to create a folder for this course. In your file explorer, create a folder named ```neur299``` wherever you would like to store the assignments.
 
 From a terminal, change directories to your ```neur299``` folder. Now we'll setup the virtual environment. In the same terminal run:
 ```
