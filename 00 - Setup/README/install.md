@@ -23,7 +23,7 @@ For non-Windows users, to check if you have Python 3, just open up a terminal an
 ```
 python3 --version
 ```
-The prompt will either return with the Python version (e.g. Python 3.5.2) or an error (e.g. `python3: command not found`). If it gives you 3.6 as the version, then you can go directly to setting up a virtual environment. If you do not have Python installed, follow the Anaconda installation instructions. **If you already have a Anaconda Python installed, skip to "Creating a Conda Environment".**
+The prompt will either return with the Python version (e.g. Python 3.5.2) or an error (e.g. `python3: command not found`). If it gives you 3.6.(something) as the version, then you can go directly to setting up a virtual environment. If you do not have Python installed, follow the Anaconda installation instructions. **If you already have a Anaconda Python installed, skip to "Creating a Conda Environment".**
 
 The same instructions should work from the Windows command prompt, possibly with `python` instead of `python3`.
 
@@ -55,13 +55,14 @@ We would recommend that you set up a bash alias to run the ```source /absolute/p
 
 **Anaconda Python install instructions**
 
-Anaconda is an installation of Python that also manages multiple computing environments. You can download Anaconda from https://www.continuum.io/downloads. Select your operating system and then choose a Python version that is at least 3.4. Follow the instructions on installing for your operating system.
+Anaconda is an installation of Python that also manages multiple computing environments. You can download Anaconda from https://www.continuum.io/downloads. Select your operating system and then choose a Python version that is at least 3.6. Follow the instructions on installing for your operating system.
 
 **Creating a conda virtual environment**
 
-We recommend that you set up a conda virtual environment so that you are sure of your environment while working on coursework material. To do this, type:
+We recommend that you set up a conda virtual environment so that you are sure of your environment while working on coursework material. To do this, you'll need the environment specification file `environment.yml` from the GitHub repo.
+Once you've acquired it and placed it in the appropriate folder, type:
 ```
-conda create -n neur299env python=3.4 numpy scipy matplotlib pandas jupyter seaborn 
+conda env create --file environment.yml
 ```
 
 This will create a _conda_ virtual environment that has the required libraries. 
