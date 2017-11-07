@@ -2,12 +2,13 @@ import numpy as np
 import scipy.stats
 
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 import time
 
 def plot_bootstrap(sampler = np.random.standard_normal, pdf = scipy.stats.norm(loc=0, scale=1).pdf,
                    statistic_func = np.mean, num_samples=100,
-                   animate_sampling=True, plot_statistic=False,
+                   plot_samples=True,
                   num_bootstraps=10,
                   num_alternates=10,):
 
@@ -20,7 +21,7 @@ def plot_bootstrap(sampler = np.random.standard_normal, pdf = scipy.stats.norm(l
     alternate_samples = [sampler(size=num_samples) for _ in range(num_alternates)]
     alternate_statistics = [statistic_func(alternate_sample) for alternate_sample in alternate_samples]
 
-    if animate_sampling:
+    if plot_samples:
 
         sns.distplot(data, kde=False,
                      hist_kws={'histtype':'step', 'linewidth':6, 'alpha':0.8, 'normed':True, 'zorder':6},
@@ -48,7 +49,7 @@ def plot_bootstrap(sampler = np.random.standard_normal, pdf = scipy.stats.norm(l
 
         plt.legend(handles, labels, loc=(1,0.6));
 
-    elif plot_statistic:
+    else:
         if statistic_func is not np.mean:
             raise NotImplementedError("statistic_func must be np.mean")
 
