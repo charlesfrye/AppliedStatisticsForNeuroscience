@@ -14,69 +14,27 @@ The main Python libraries you'll use are
 - seaborn: special plotting library for statistical visualization
 - jupyter: "notebook" style documents for python code
 
-### Checking for a previous Python installation
-If you already have Python 3.6 installed, we will create a new virtual environment for NEUR299 which should not interfere with your current Python installation (Case 1).
-
-If you do not have Python 3.6 installed, we recommend using Anaconda Python and the Anaconda virtual environment (Case 2). Instructions for each case are below, please only follow one, NOT both.
-
-For non-Windows users, to check if you have Python 3, just open up a terminal and type:
-```
-python3 --version
-```
-The prompt will either return with the Python version (e.g. Python 3.5.2) or an error (e.g. `python3: command not found`). If it gives you 3.6.(something) as the version, then you can go directly to setting up a virtual environment. If you do not have Python installed, follow the Anaconda installation instructions. **If you already have a Anaconda Python installed, skip to "Creating a Conda Environment".**
-
-The same instructions should work from the Windows command prompt, possibly with `python` instead of `python3`.
-
-### Setting up a virtual environment - If you already have Python installed [Case 1]
-Virtual environments are a way of running multiple Python versions with different libraries without causing conflicts. We will create a workspace for NEUR299 that has all of the required libraries and will not interfere with other Python work you may have.
-
-First, you'll want to create a folder for this course. In your file explorer, create a folder named ```neur299``` wherever you would like to store the assignments.
-
-From a terminal, change directories to your ```neur299``` folder. Now we'll setup the virtual environment. In the same terminal run:
-```
-pip install --upgrade virtualenv
-virtualenv -p python3 --system-site-packages neur299env
-source neur299env/bin/activate
-pip3 install --upgrade numpy scipy matplotlib pandas jupyter seaborn 
-```
-Now, whenever you want to work on NEUR299 assignments, you can run
-```
-source /absolute/path/to/neur299env/bin/activate
-```
-and when you're done and want to return to your regular bash environment you can run
-```
-deactivate
-```
-The virtual environment can be activated from any directory. It is simply a way to control which Python version is being used and what libraries are available.
-
-We would recommend that you set up a bash alias to run the ```source /absolute/path/to/neur299env/bin/activate``` command. If you don't know how to do this, ask the GSI.
-
-### Installing Anaconda Python 3 - If you do not already have Python [Case 2]
+### Installing Anaconda Python 3
 
 **Anaconda Python install instructions**
 
 Anaconda is an installation of Python that also manages multiple computing environments. You can download Anaconda from https://www.continuum.io/downloads. Select your operating system and then choose a Python version that is at least 3.6. Follow the instructions on installing for your operating system.
 
-**Creating a conda virtual environment**
+**Creating a ```conda``` virtual environment**
 
 We recommend that you set up a conda virtual environment so that you are sure of your environment while working on coursework material. To do this, you'll need the environment specification file `environment.yml` from the GitHub repo.
-Once you've acquired it and placed it in the appropriate folder, type:
+Once you've acquired it and placed it in the appropriate folder, run the following command in the command line:
 ```
 conda env create --file environment.yml
 ```
 
 This will create a _conda_ virtual environment that has the required libraries. 
-Now, whenever you want to work on NEUR299 assignments, you can run
+Now, whenever you want to work on NEUR299, you can run
 ```
 source activate neur299env
 ```
-and when you're done and want to return to your regular bash environment you can run
+and when you're done and want to return to your regular environment you can run
 ```
 source deactivate
 ```
 The virtual environment can be activated from any directory. It is simply a way to control which Python version is being used and what libraries are available.
-
-We would recommend that you set up a bash alias to run the ```source activate neur299env``` command. If you don't know how to do this, ask a GSI!
-
-# Trouble with any of the above?
-Come see your friendly GSI!
