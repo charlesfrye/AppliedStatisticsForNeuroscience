@@ -23,7 +23,8 @@ Anaconda is an installation of Python that also manages multiple computing envir
 **Creating a ```conda``` virtual environment**
 
 We recommend that you set up a conda virtual environment so that you are sure of your environment while working on coursework material. To do this, you'll need the environment specification file `environment.yml` from the GitHub repo.
-Once you've acquired it and placed it in the appropriate folder, run the following command in the command line:
+Once you've acquired it and placed it in the appropriate folder (this is automatic if you clone or download the repo),
+run the following command in the command line:
 ```
 conda env create --file environment.yml
 ```
