@@ -13,9 +13,9 @@ def plot_distributions():
     plt.plot(xs,[laplace.pdf(x) for x in xs],linewidth=4,label='Laplace');
     plt.legend();
 
-def generate_dataset(N=15,distribution='gauss'):
+def draw_sample(N=15,distribution='gauss'):
     """
-    Produce a dataset of size N with a given distribution.
+    Produce a sample of size N with a given distribution.
     Distribution must be either Gaussian or Laplacian.
     Location and scale parameters are fixed at 0 and 4.
 
@@ -26,7 +26,7 @@ def generate_dataset(N=15,distribution='gauss'):
 
     Returns
     -------
-    A numpy array of length N an error
+    A numpy array of length N
     """
 
     if distribution == 'laplace':
