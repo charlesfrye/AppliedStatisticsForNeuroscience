@@ -3,7 +3,7 @@
 This course was written in Python 3.6.
 While it may be possible to run in later versions of Python,
 this is not guaranteed.
-If you do not have Python installed already, we highly recommend using an Anaconda Python installation (described below).
+If you do not have Python installed already, we recommend using an Anaconda Python installation (described below).
 
 The main Python libraries you'll use are
 
@@ -32,10 +32,22 @@ conda env create --file environment.yml
 This will create a _conda_ virtual environment that has the required libraries. 
 Now, whenever you want to work on NEUR299, you can run
 ```
-source activate neur299env
+source activate neur299
 ```
 and when you're done and want to return to your regular environment you can run
 ```
 source deactivate
 ```
 The virtual environment can be activated from any directory. It is simply a way to control which Python version is being used and what libraries are available.
+
+**Linking ```conda``` and Jupyter**
+
+We'll be using a set of tools from the
+[Jupyter Project](http://jupyter.org/)
+for this course.
+In order to integrate Jupyter into our new `conda` environment,
+we need to run the following command:
+
+```
+python -m ipykernel install --user --name neur299 --display-name "neur299"
+```
