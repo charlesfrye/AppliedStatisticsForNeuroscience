@@ -12,3 +12,5 @@ __pycache__/
 
 *.xlsx
 *.zip
+
+run_notebooks.py
