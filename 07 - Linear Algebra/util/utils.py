@@ -25,9 +25,8 @@ def make_mesh(mesh_props):
 
 def plot_mesh(f,ax,xs,ys,colors):
     ax.set_aspect('equal')
-    h = plt.scatter(xs,ys,
-                facecolor='black',alpha=0.7,
-                    edgecolor='none',
+    h = plt.scatter(xs.flatten(),ys.flatten(),
+                alpha=0.7,edgecolor='none',
                 s=36,linewidth=2,
                 zorder=6,
                c=colors,cmap='hot')
