@@ -4,10 +4,12 @@ to set up your computing environment for this course.
 We'll be using Python 3 inside of Jupyter notebooks,
 along with a variety of standard libraries for working with data.
 
-Once your environment is ready to go
-and you've downloaded
-the folder `Tech Tools Tutorial`,
-open up a terminal (if you're on OS X/Linux)
+Once your environment is ready to go,
+downloaded the folder `Tech Tools Tutorial`
+to your course folder.
+
+If you're on OS X or Linux,
+open up a terminal
 and type in
 
 ```
