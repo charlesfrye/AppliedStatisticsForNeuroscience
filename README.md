@@ -35,4 +35,4 @@ by clicking the badge below.
 
 This will create a Jupyter notebook server on a remote computer, then give you access to it via your web browser.
 This avoids you having to install anything on your machine.
-Any changes you make to the notebooks will not be saved, however, so this is better suited for quickly checking out just a single section, or reading through the solutions.
+Any changes you make to the notebooks will not be saved, however, so this is better suited for quickly checking out just a single section or reading through the solutions.
