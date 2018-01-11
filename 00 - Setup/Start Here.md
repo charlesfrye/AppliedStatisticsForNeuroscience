@@ -13,7 +13,7 @@ open up a terminal
 and type in
 
 ```
-source activate neur299env
+source activate neur299
 ```
 and hit enter, then type
 ```
@@ -25,7 +25,7 @@ If you're on Windows, open up a
 command prompt window
 and type in
 ```
-activate neur299env
+activate neur299
 ```
 and hit enter, then type
 ```
