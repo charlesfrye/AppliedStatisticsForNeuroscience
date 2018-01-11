@@ -26,7 +26,7 @@ We recommend that you set up a conda virtual environment so that you are sure of
 Once you've acquired it and placed it in the appropriate folder (this is automatic if you clone or download the repo),
 run the following command in the command line:
 ```
-conda env create --file environment.yml
+conda env create --file environment.yml -n neur299
 ```
 
 This will create a _conda_ virtual environment that has the required libraries. 
