@@ -3,6 +3,7 @@ name: neur299env
 dependencies:
 - python>=3.6
 - jupyter
+- ipywidgets>=7.0
 - matplotlib>=2.0
 - numpy>=1.13
 - pandas>=0.20
