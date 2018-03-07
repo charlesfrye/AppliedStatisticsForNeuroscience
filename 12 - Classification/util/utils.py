@@ -69,7 +69,7 @@ def plot_surface(ax, x_mesh, y_mesh, output):
 
 def plot_data(ax, regressors, ys):
     ax.scatter(regressors[0], regressors[1], ys, depthshade=False, c=np.squeeze(ys),
-                s=48, zorder=2);
+                s=48, zorder=2, cmap='RdBu');
     return
 
 def setup_data(extent,N):
@@ -210,6 +210,6 @@ def make_datasets(N=100):
             ]
 
 def plot_train_and_test(train, train_labels, test, test_labels, holdout, ax):
-    ax.scatter(train[:, 0], train[:, 1], c=train_labels)
-    ax.scatter(test[:, 0], test[:, 1], c=test_labels, alpha=0.35)
+    ax.scatter(train[:, 0], train[:, 1], c=train_labels, s=36, cmap='RdBu')
+    ax.scatter(test[:, 0], test[:, 1], c=test_labels, alpha=0.35, s=36, cmap='RdBu')
     return
