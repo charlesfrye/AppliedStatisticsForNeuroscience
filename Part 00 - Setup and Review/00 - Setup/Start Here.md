@@ -6,7 +6,7 @@ along with a variety of standard libraries for working with data.
 
 Once your environment is ready to go,
 make sure the folder `Tech Tools Tutorial`
-is in your course folder.
+is in your course folder, under `Part 00 - Setup and Review/00 - Setup`.
 
 If you're on OS X or Linux,
 open up a terminal
