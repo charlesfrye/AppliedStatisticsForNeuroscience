@@ -5,8 +5,8 @@ We'll be using Python 3 inside of Jupyter notebooks,
 along with a variety of standard libraries for working with data.
 
 Once your environment is ready to go,
-downloaded the folder `Tech Tools Tutorial`
-to your course folder.
+make sure the folder `Tech Tools Tutorial`
+is in your course folder.
 
 If you're on OS X or Linux,
 open up a terminal
