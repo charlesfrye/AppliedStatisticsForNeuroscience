@@ -2,7 +2,7 @@
 
 This repository contains materials for the UC Berkeley course Neuroscience 299, *Applied Statistics for Neuroscientists*.
 
-Materials are organized into sections that correspond to weeks of the semester. These folders contain Jupyter notebooks that serve as tutorial material and labs for the course. Tutorials should be completed before labs.
+The course is divided into three parts: setup and review, statistical testing, and statistical modeling. Within a part, materials are organized into folders that correspond to weeks of the semester.  These folders contain Jupyter notebooks that serve as tutorial material and labs for the course. Tutorials should be completed before labs.
 
 The course can be completed either totally online or on your own machine. Completing the course online means you don't have to install anything locally, but it means you'll have a harder time saving your work.
 
@@ -14,15 +14,15 @@ up through section 8.
 
 ### Local Version
 
-To run this class locally, on your own computer, start by downloading the materials.
+To run this class locally, i.e. on your own computer, start by downloading the materials.
 Click the green "Clone or Download" button and choose "Download ZIP".
 Unzip the resulting file into the location of your choosing.
 
 Follow
-[the instructions here](https://github.com/charlesfrye/AppliedStatisticsForNeuroscience/blob/master/00%20-%20Setup/Start%20Here.md).
+[the instructions here](https://github.com/charlesfrye/AppliedStatisticsForNeuroscience/blob/master/Part%2000%20-%20Setup%20and%20Review/00%20-%20Setup/Start%20Here.md).
 You'll need to install an appropriate computational environment, as described in
-[the installation instructions](https://github.com/charlesfrye/AppliedStatisticsForNeuroscience/blob/master/00%20-%20Setup/Installation%20Instructions.md).
-The notebooks in `00 - Setup` will get you acquainted with
+[the installation instructions](https://github.com/charlesfrye/AppliedStatisticsForNeuroscience/blob/master/Part%2000%20-%20Setup%20and%20Review/00%20-%20Setup/Installation%20Instructions.md).
+The notebooks in `Part 00 - Setup and Review/00 - Setup` will get you acquainted with
 the Jupyter notebook format, Python, and the statistical libraries used in this course.
 
 ### Online Version - Binder
