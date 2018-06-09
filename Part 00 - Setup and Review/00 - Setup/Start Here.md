@@ -1,5 +1,5 @@
 You'll need to begin by following the
-[installation instructions](https://github.com/charlesfrye/AppliedStatisticsForNeuroscience/blob/master/00%20-%20Setup/Installation%20Instructions.md)
+[installation instructions](https://github.com/charlesfrye/AppliedStatisticsForNeuroscience/blob/master/Part%2000%20-%20Setup%20and%20Review/00%20-%20Setup/Installation%20Instructions.md)
 to set up your computing environment for this course.
 We'll be using Python 3 inside of Jupyter notebooks,
 along with a variety of standard libraries for working with data.
