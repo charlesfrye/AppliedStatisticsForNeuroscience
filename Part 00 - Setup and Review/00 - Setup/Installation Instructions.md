@@ -51,3 +51,5 @@ we need to run the following command:
 ```
 python -m ipykernel install --user --name neur299 --display-name "neur299"
 ```
+
+Make sure to run this command while inside the environment!
