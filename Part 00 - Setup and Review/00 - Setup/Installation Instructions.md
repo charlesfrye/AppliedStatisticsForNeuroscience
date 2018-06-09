@@ -18,7 +18,7 @@ The main Python libraries you'll use are
 
 **Anaconda Python install instructions**
 
-Anaconda is an installation of Python that also manages multiple computing environments. You can download Anaconda from https://www.continuum.io/downloads. Select your operating system and then choose a Python version that is at least 3.6. Follow the instructions on installing for your operating system.
+Anaconda is an installation of Python that also manages multiple computing environments. You can download Anaconda from https://www.continuum.io/downloads. Select your operating system and then choose a Python version that is at least 3.6. Follow the instructions on installing for your operating system. **NOTE FOR WINDOWS USERS**: while installing, make sure you check the box that says  "Add to $PATH". This may cause the text to turn red.
 
 **Creating a ```conda``` virtual environment**
 
