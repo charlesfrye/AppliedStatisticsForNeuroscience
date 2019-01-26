@@ -32,17 +32,21 @@ def do_preprocessing(preprocessors, notebook_path, output_path):
     print("Preprocessing {0}".format(notebook_path))
 
     for preprocessor in preprocessors:
-        preprocessor.preprocess(nb, {'metadata': {'path': output_directory}})
+        try:
+            preprocessor.preprocess(nb, {'metadata': {'path': output_directory}})
+        except nbconvert.preprocessors.CellExecutionError:
+            error_msg = "\033[1;31mError Executing Notebook {}\033[0m".format(notebook_path)
+            print("\t" + error_msg)
+        finally:
+            with open(output_path, 'wt') as f:
+                nbformat.write(nb, f)
 
-    with open(output_path, 'wt') as f:
-        nbformat.write(nb, f)
-
-    print("\tSaved to {0}".format(output_path))
+            print("\tSaved to {0}".format(output_path))
 
 
 def make_execute_preprocessor():
     ep = nbconvert.preprocessors.ExecutePreprocessor(
-                                timeout=600, kernel_name='neur299')
+                                timeout=600, kernel_name='python3')
     return ep
 
 
