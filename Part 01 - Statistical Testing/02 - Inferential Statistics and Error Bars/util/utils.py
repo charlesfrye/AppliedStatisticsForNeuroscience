@@ -40,7 +40,7 @@ def draw_sample(N=15,distribution='gauss'):
 def plot_experiment(means,medians):
     style_dictionary = { 'linewidth': 4,
                           'edgecolor': 'white',
-                           'normed':True}
+                           'density':True}
     mn = min(min(means),min(medians))
     mx = max(max(medians),max(means))
     bins = np.linspace(mn,mx,25)
