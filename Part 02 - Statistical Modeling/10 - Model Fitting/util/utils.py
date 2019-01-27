@@ -153,7 +153,7 @@ def plot_simulation_results(example_xs, example_ys, rs, example_residuals):
 
     plt.figure()
     ax = sns.distplot(rs, hist=True, kde=False, rug=False,
-                 hist_kws={'histtype':'stepfilled','linewidth':4,'normed':True});
+                 hist_kws={'histtype':'stepfilled','linewidth':4,'density':True});
     ax.set_xlim([-1,1])
     plt.title('Distribution of Correlations Between Residuals and Regressors')
 
@@ -164,7 +164,7 @@ def plot_simulation_results(example_xs, example_ys, rs, example_residuals):
 
     plt.figure()
     sns.distplot(example_residuals,hist=True,kde=False,rug=False,
-                 hist_kws={'histtype':'stepfilled','linewidth':4,'normed':True})
+                 hist_kws={'histtype':'stepfilled','linewidth':4,'density':True})
     plt.title('Example Distribution of Residuals');
 
     return
