@@ -110,7 +110,7 @@ def plot_approximated_F(fs):
             'edgecolor': 'gray',
             'linewidth': 4,
             'histtype': 'stepfilled',
-            'normed':True}
+            'density':True}
 
     sns.distplot(fs, kde=False, hist_kws=hist_style,
                         label=r'Resampling-Estimated PDF of $F$-statistic');
