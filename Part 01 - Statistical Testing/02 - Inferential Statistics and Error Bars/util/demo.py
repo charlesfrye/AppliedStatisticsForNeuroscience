@@ -27,8 +27,8 @@ def setup_plot(ax, locs, edge, labels):
     ax.set_ylim([0,1]); ax.set_xlim([locs[0]-edge,locs[1]+edge]);
     ax.xaxis.set_ticks(locs); ax.xaxis.set_ticklabels(labels)
     ax.yaxis.set_ticks([0,0.5,1]);
-    ax.tick_params(axis='x',top='off')
-    ax.tick_params(axis='y',right='off')
+    ax.tick_params(axis='x',top=False)
+    ax.tick_params(axis='y',right=False)
     plt.ylabel('Probability',fontsize='x-large',fontweight='bold')
 
 def central_limit_demo(pmf, iters):
