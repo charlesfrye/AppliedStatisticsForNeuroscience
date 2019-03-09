@@ -24,8 +24,8 @@ def generate_data(num_subjects,num_factors,standard_dev):
     return df
 
 def run_ANOVA(df):
-    predictors = '*'.join(df.columns[:-1])
-    ols_lm = smf.ols('outcome ~ '+predictors,data=df)
+    predictors = '*'.join([column for column in df.columns if column is not "outcome"])
+    ols_lm = smf.ols('outcome ~ ' + predictors, data=df)
     fit = ols_lm.fit()
     results = sm.stats.anova_lm(fit,typ=2)
 
