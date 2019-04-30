@@ -51,7 +51,7 @@ def make_execute_preprocessor():
 
 
 def make_remove_answers_preprocessor():
-    text_answer_pattern = r"""<font color=['"]#?1874CD['"]>"""
+    text_answer_pattern = r"""<font color=['"]?#?1874CD['"]?>"""
     code_answer_pattern = r"""#* answer"""
     rap = nbconvert.preprocessors.RegexRemovePreprocessor(
                                 patterns=[code_answer_pattern,
