@@ -42,9 +42,8 @@ def make_regression_plot(fit_best_model):
     # setup plot
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
-    ax.set_aspect('equal')
 
-    ax._axis3don = False
+    ax._axis3don = True
 
     # plot the "achievable plane" of model outputs
     ax.plot_surface(Xs,Ys,Zs,alpha=0.5,color='hotpink',shade=False)
@@ -63,9 +62,9 @@ def make_regression_plot(fit_best_model):
     # plot the y, z, and x axes as thick black lines
     for _ in range(3):
         coords = np.roll(coords, 1, axis=0)
-        plt.plot(*coords,
+        ax.plot(*coords,
          color='k', linewidth=4, zorder=1);
-
+    
     # compute the weights of the best-fit model
     if fit_best_model:
         weights = ordinary_least_squares(normalized_x,y)
@@ -74,8 +73,8 @@ def make_regression_plot(fit_best_model):
 
     # compute and plot the outputs of the model as a black star
     y_hats = np.squeeze(np.dot(weights, normalized_x))
-    ax.scatter3D(*y_hats, marker='*', s=24**2, edgecolor='k', facecolor='None',
-                     zorder=0, zdir='z', linewidth=2)
+    ax.scatter3D(*y_hats, marker='*', s=24**2, edgecolor='k', facecolor=[1, 1, 1, 0],
+                 zorder=0, zdir='z', linewidth=2)
 
     # connect the true values and the model outputs with a red line
     #   to represent the residuals
@@ -190,7 +189,6 @@ def plot_cost_surface(cost, N, mesh_extent):
 
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
-    ax.set_aspect('equal')
 
     ax._axis3don = False
 
